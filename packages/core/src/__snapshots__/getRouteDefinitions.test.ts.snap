@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`getRouteDefinitions should handle general param decorators 1`] = `
+[
+  RouteDefinition {
+    "controllerName": "TestController",
+    "methodName": "getHello",
+    "params": [
+      {
+        "dto": undefined,
+        "index": 0,
+        "type": "request",
+      },
+    ],
+    "path": "/api/hello",
+    "requestMethod": "get",
+    "routeHandler": [Function],
+  },
+  RouteDefinition {
+    "controllerName": "TestController",
+    "methodName": "postHello",
+    "params": [
+      {
+        "dto": undefined,
+        "index": 0,
+        "type": "request_context",
+      },
+    ],
+    "path": "/api/hello",
+    "requestMethod": "post",
+    "routeHandler": [Function],
+  },
+]
+`;
+
+exports[`getRouteDefinitions should return route info for a simple method decorator 1`] = `
+[
+  RouteDefinition {
+    "controllerName": "SimpleController",
+    "methodName": "sayHello",
+    "params": [],
+    "path": "/api/hello",
+    "requestMethod": "get",
+    "routeHandler": [Function],
+  },
+]
+`;
