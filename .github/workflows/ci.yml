@@ -13,6 +13,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Enable Corepack (Yarn 4)
+        run: |
+          corepack enable
+          corepack install
       - name: Check out code
         uses: actions/checkout@v4
         with:
@@ -22,10 +26,6 @@ jobs:
         with:
           node-version: 22
           cache: 'yarn'
-      - name: Enable Corepack (Yarn 4)
-        run: |
-          corepack enable
-          corepack install
 
       - name: Install dependencies
         run: yarn
