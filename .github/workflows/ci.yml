@@ -17,12 +17,15 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 2
-
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'yarn'
+      - name: Enable Corepack (Yarn 4)
+        run: |
+          corepack enable
+          corepack install
 
       - name: Install dependencies
         run: yarn
