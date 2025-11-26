@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createExpressRouter } from './createExpressRouter';
 import { createExpressHandler } from './createExpressHandler';
-import { RouteDefinition } from '../core';
+import { RouteDefinition } from '@zistr/core';
 
 // Mock createExpressHandler
 jest.mock('./createExpressHandler', () => ({

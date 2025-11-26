@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createExpressHandler } from './createExpressHandler';
-import { config } from '../../../config';
 import { mapRequestToZistr } from './mapRequestToZistr';
-import { RouteDefinition } from '../core';
+import { RouteDefinition } from '@zistr/core';
 
 describe('createExpressHandler', () => {
   const mockReq = (overrides = {}) =>
@@ -26,7 +25,6 @@ describe('createExpressHandler', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    config.app = { enableRequestLog: false } as any; // default
   });
 
   const testRoute: RouteDefinition = {

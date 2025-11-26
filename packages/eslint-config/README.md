@@ -1,1 +1,0 @@
-# @zistr/eslint-config

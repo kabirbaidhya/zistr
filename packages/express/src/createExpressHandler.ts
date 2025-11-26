@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { config } from '../../../config';
-import { RouteDefinition } from '../core';
+import { RouteDefinition } from '@zistr/core';
+
 import { mapRequestToZistr } from './mapRequestToZistr';
 import { DEBUG_EXPRESS_EXECUTION } from './constants';
 import debug from 'debug';
@@ -12,9 +12,6 @@ const debugLog = debug(DEBUG_EXPRESS_EXECUTION);
  */
 export function createExpressHandler(routeDefinition: RouteDefinition) {
   return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    // TODO: replace with DEBUg logs for /lib code.
-    const isReqLoggingEnabled = config.app.enableRequestLog;
-
     try {
       const zistrReq = mapRequestToZistr(req);
       debugLog('running express route handler', { req, zistrReq });
@@ -38,13 +35,11 @@ export function createExpressHandler(routeDefinition: RouteDefinition) {
 
       const { status, data, contentType } = result;
 
-      if (isReqLoggingEnabled) {
-        console.log(`[RESPONSE] ${req.method} ${req.originalUrl}`, {
-          status,
-          type: contentType ?? 'application/json',
-          data: typeof data === 'object' ? JSON.stringify(data) : data,
-        });
-      }
+      debugLog(`response - ${req.method} ${req.originalUrl}`, {
+        status,
+        type: contentType ?? 'application/json',
+        data: typeof data === 'object' ? JSON.stringify(data) : data,
+      });
 
       // If data is empty, send empty response
       if (data === null || data === undefined) {
@@ -64,9 +59,7 @@ export function createExpressHandler(routeDefinition: RouteDefinition) {
         res.status(status).json(data);
       }
     } catch (err) {
-      if (isReqLoggingEnabled) {
-        console.error(`[ERROR] ${req.method} ${req.originalUrl}:`, err);
-      }
+      debugLog(`error - ${req.method} ${req.originalUrl}:`, err);
 
       next(err);
     }

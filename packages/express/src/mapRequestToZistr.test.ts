@@ -1,5 +1,5 @@
 import { mapRequestToZistr } from './mapRequestToZistr';
-import { ZistrRequest, ParamsDictionary } from '../core';
+import { ZistrRequest, ParamsDictionary } from '@zistr/core';
 import type { ParsedQs } from 'qs';
 
 describe('mapRequestToZistr', () => {

@@ -1,8 +1,12 @@
 {
   "$schema": "https://turborepo.com/schema.json",
   "tasks": {
-    "test": {},
-    "lint": {},
+    "test": {
+      "cache": false
+    },
+    "lint": {
+      "cache": false
+    },
     "build": {
       "outputs": ["dist/**"]
     },
@@ -12,6 +16,10 @@
     "dev": {
       "persistent": true,
       "cache": false
+    },
+    "clean": {
+      "cache": false,
+      "outputs": []
     }
   }
 }

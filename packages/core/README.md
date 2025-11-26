@@ -1,1 +1,1 @@
-# core
+# @zistr/core

@@ -1,5 +1,5 @@
-import type { Request as ExpressRequest } from 'express'; // only for runtime value
-import { ZistrRequest, RequestContext, ParamsDictionary } from '../core';
+import type { Request as ExpressRequest } from 'express';
+import { ZistrRequest, RequestContext, ParamsDictionary } from '@zistr/core';
 import type { ParsedQs } from 'qs';
 
 /**

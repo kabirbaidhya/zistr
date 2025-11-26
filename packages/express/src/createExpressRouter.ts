@@ -1,9 +1,9 @@
 import debug from 'debug';
 import { RequestHandler, Router } from 'express';
-import { createExpressHandler } from './createExpressHandler';
+import { RouteDefinition } from '@zistr/core';
 
-import { RouteDefinition } from '../core';
-import { requestContext } from '../core';
+import { createExpressHandler } from './createExpressHandler';
+import { requestContext } from './requestContext';
 import { DEBUG_EXPRESS_DEFINITION } from './constants';
 
 interface Options {

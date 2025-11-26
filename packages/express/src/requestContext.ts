@@ -1,7 +1,8 @@
 import { NextFunction, Response } from 'express';
-import { EnrichedRequest } from './types';
-import { RequestContext } from '../core';
 import debug from 'debug';
+import { RequestContext } from '@zistr/core';
+
+import { EnrichedRequest } from './types';
 import { DEBUG_EXPRESS_EXECUTION } from './constants';
 
 export type ContextSetterFunction = (req: EnrichedRequest) => RequestContext;

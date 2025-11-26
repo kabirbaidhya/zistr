@@ -1,7 +1,5 @@
 import { Request } from 'express';
-import { JwtPayload } from 'jsonwebtoken';
-
-import type { RequestContext } from '../core';
+import type { RequestContext } from '@zistr/core';
 
 /**
  * Extended Request type with optional auth payload injected by JWT middleware.
@@ -16,6 +14,6 @@ export type EnrichedRequest<Params = Record<string, any>, ReqBody = any, ReqQuer
   ReqBody,
   ReqQuery
 > & {
-  auth?: JwtPayload;
+  auth?: Record<string, unknown>;
   context?: RequestContext;
 };
