@@ -26,7 +26,9 @@ describe('Core E2E: Routes Invocation', () => {
 
   it('Body Injection: invalid DTO throws validation error', async () => {
     const invalidBody = { item: 'Monitor', quantity: 'five' };
-    await expect(invoker.invoke('post', '/orders', { body: invalidBody as any })).rejects.toThrow('error ss dfd ');
+    await expect(invoker.invoke('post', '/orders', { body: invalidBody as any })).rejects.toThrow(
+      '"quantity" must be a positive integer'
+    );
   });
 
   it('Query Injection: query object passes', async () => {

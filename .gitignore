@@ -32,3 +32,5 @@ node_modules
 
 # Misc
 coverage/
+dist/
+build/

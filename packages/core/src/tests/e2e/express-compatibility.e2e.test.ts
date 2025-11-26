@@ -2,7 +2,8 @@
 import request from 'supertest';
 import express, { json, Request as ExpressRequest, Response } from 'express';
 
-import { getRouteDefinitions, ZistrRequest } from '../../index';
+import { getRouteDefinitions, RouteDefinition, ZistrRequest } from '../../index';
+import { OrdersController } from './helpers/stub';
 
 function mapExpressRequestToZistr(req: ExpressRequest): ZistrRequest {
   return new ZistrRequest({
@@ -23,13 +24,12 @@ function mapExpressRequestToZistr(req: ExpressRequest): ZistrRequest {
   });
 }
 
-import { OrdersController } from './helpers/stub';
+const routes: RouteDefinition[] = getRouteDefinitions([OrdersController]);
 
-const setupTestApp = (): express.Express => {
+const setupTestApp = (routes: RouteDefinition[]): express.Express => {
   const app = express();
   app.use(json());
 
-  const routes = getRouteDefinitions([OrdersController]);
   const router = express.Router();
 
   // Attach all controller routes to Express using only the public API
@@ -59,7 +59,7 @@ describe('E2E: Express Compatibility test', () => {
   let app: express.Express;
 
   beforeAll(() => {
-    app = setupTestApp();
+    app = setupTestApp(routes);
   });
 
   it('Route Discovery & Query Injection', async () => {

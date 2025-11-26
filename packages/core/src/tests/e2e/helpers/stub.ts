@@ -1,35 +1,41 @@
 import { BaseController, Controller, Get, Post, Put, Delete, ReqBody, Query, Params, BaseDto } from '../../../index';
 
+/**
+ * DTO with validation.
+ */
 export class CreateOrderDto extends BaseDto {
   item!: string;
   quantity!: number;
 
   validate(): void {
     if (typeof this.item !== 'string' || this.item.trim() === '') {
-      throw new Error('Item must be a non-empty string');
+      throw new Error('"item must be a non-empty string');
     }
     if (typeof this.quantity !== 'number' || !Number.isInteger(this.quantity) || this.quantity <= 0) {
-      throw new Error('Quantity must be a positive integer');
+      throw new Error('"quantity" must be a positive integer');
     }
   }
 }
 
+/**
+ * Plain DTO without validation.
+ */
 export class UpdateOrderDto extends BaseDto {
   quantity!: number;
 }
 
-interface OrderQueryDto {
+interface OrderQueryParams {
   search: string;
 }
 
-interface OrderParamsDto {
+interface OrderParams {
   id: string;
 }
 
 @Controller('/orders')
 export class OrdersController extends BaseController {
   @Get()
-  listOrders(@Query() query: OrderQueryDto) {
+  listOrders(@Query() query: OrderQueryParams) {
     return { query };
   }
 
@@ -39,17 +45,17 @@ export class OrdersController extends BaseController {
   }
 
   @Get('/:id')
-  getOrder(@Params() params: OrderParamsDto) {
+  getOrder(@Params() params: OrderParams) {
     return { id: params.id };
   }
 
   @Put('/:id')
-  updateOrder(@Params() params: OrderParamsDto, @ReqBody() dto: UpdateOrderDto) {
+  updateOrder(@Params() params: OrderParams, @ReqBody() dto: UpdateOrderDto) {
     return { id: params.id, updated: dto.quantity };
   }
 
   @Delete('/:id')
-  deleteOrder(@Params() params: OrderParamsDto) {
+  deleteOrder(@Params() params: OrderParams) {
     return { id: params.id, deleted: true };
   }
 }

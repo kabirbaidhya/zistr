@@ -6,10 +6,6 @@ import { ParamType } from './decorators/metadata';
 import { BaseDto } from './BaseDto';
 import type { ParamMetadata } from './types';
 
-// ---------------------------------------------------------------------
-// DTOs WITH SCHEMAS
-// ---------------------------------------------------------------------
-
 class TestBodyDto extends BaseDto {
   name!: string;
 }
@@ -21,10 +17,6 @@ class TestQueryDto extends BaseDto {
 class TestParamsDto extends BaseDto {
   id!: string;
 }
-
-// ---------------------------------------------------------------------
-// Realistic controller
-// ---------------------------------------------------------------------
 
 class UserController {
   async createUser(
@@ -59,10 +51,6 @@ class UserController {
     return { method: req.method, path: req.path };
   }
 }
-
-// ---------------------------------------------------------------------
-// Helper to make request
-// ---------------------------------------------------------------------
 
 function makeRequest(overrides: Partial<ZistrRequest> = {}) {
   return new ZistrRequest({
