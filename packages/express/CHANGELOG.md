@@ -1,5 +1,11 @@
 # @zistr/express
 
+## 0.3.0
+
+### Minor Changes
+
+- d1fca11: Use @zistr/core:0.1.0
+
 ## 0.2.0
 
 ### Minor Changes
