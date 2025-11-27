@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`E2E: list-routes command should succeed and print routes for a valid route module 1`] = `
+{
+  "status": 0,
+  "stderr": "",
+  "stdout": "
+┌─────────┬──────────┬──────────────┬──────────────────────────────┐
+│ (index) │ Method   │ Path         │ Handler                      │
+├─────────┼──────────┼──────────────┼──────────────────────────────┤
+│ 0       │ 'post'   │ '/users'     │ 'UserController.createUser'  │
+│ 1       │ 'get'    │ '/users'     │ 'UserController.getUsers'    │
+│ 2       │ 'get'    │ '/users/:id' │ 'UserController.getUserById' │
+│ 3       │ 'put'    │ '/users/:id' │ 'UserController.updateUser'  │
+│ 4       │ 'delete' │ '/users/:id' │ 'UserController.deleteUser'  │
+└─────────┴──────────┴──────────────┴──────────────────────────────┘
+Total routes: 5
+",
+}
+`;

@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`E2E: CLI general options should display help with --help 1`] = `
+{
+  "status": 0,
+  "stderr": "",
+  "stdout": "Usage: zistr [options] [command]
+
+Zistr CLI
+
+Options:
+  -V, --version          output the version number
+  -h, --help             display help for command
+
+Commands:
+  list-routes [options]  List all registered routes
+  help [command]         display help for command
+",
+}
+`;
+
+exports[`E2E: CLI general options should display the correct version with --version 1`] = `
+{
+  "status": 0,
+  "stderr": "",
+  "stdout": "0.0.0
+",
+}
+`;
