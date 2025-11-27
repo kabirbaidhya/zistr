@@ -5,7 +5,8 @@ import packageJson from '../../package.json';
 describe('E2E: CLI general options', () => {
   it('should run the CLI executable directly without crashing', () => {
     const result = runCLI();
-    expect([0, 1]).toContain(result.status);
+
+    expect(outputOf(result)).toMatchSnapshot();
   });
 
   it('should display help with --help', () => {
@@ -24,6 +25,7 @@ describe('E2E: CLI general options', () => {
     expect(result.status).toBe(0);
     expect(result.stdout.trim()).toBe(packageVersion);
     expect(result.stderr).toBe('');
-    expect(outputOf(result)).toMatchSnapshot();
+
+    // Skip snapshot testing for version output as messes up the release process.
   });
 });

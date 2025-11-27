@@ -19,11 +19,21 @@ Commands:
 }
 `;
 
-exports[`E2E: CLI general options should display the correct version with --version 1`] = `
+exports[`E2E: CLI general options should run the CLI executable directly without crashing 1`] = `
 {
-  "status": 0,
-  "stderr": "",
-  "stdout": "0.0.0
+  "status": 1,
+  "stderr": "Usage: zistr [options] [command]
+
+Zistr CLI
+
+Options:
+  -V, --version          output the version number
+  -h, --help             display help for command
+
+Commands:
+  list-routes [options]  List all registered routes
+  help [command]         display help for command
 ",
+  "stdout": "",
 }
 `;
