@@ -10,7 +10,7 @@
     "check-format": "prettier --check .",
     "test": "turbo run test",
     "clean": "turbo run clean",
-    "publish-packages": "turbo run build lint test && changeset version && changeset publish"
+    "publish-packages": "turbo run build lint test && changeset version && changeset publish && git push origin --tags"
   },
   "workspaces": [
     "apps/*",
