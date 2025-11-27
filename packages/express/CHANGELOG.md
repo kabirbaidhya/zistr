@@ -1,5 +1,11 @@
 # @zistr/express
 
+## 0.2.0
+
+### Minor Changes
+
+- ac6d401: Expose `requestContext` middleware.
+
 ## 0.1.0
 
 ### Minor Changes
