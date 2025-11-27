@@ -14,7 +14,8 @@
     "check-types": "tsc --noEmit",
     "build": "tsup src/index.ts --format cjs",
     "dev": "tsup src/index.ts --format cjs --watch",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "jest --runInBand --config jest.config.cjs"
   },
   "dependencies": {
     "@zistr/core": "0.1.0",
@@ -24,6 +25,7 @@
     "@zistr/eslint-config": "workspace:^",
     "@zistr/typescript-config": "workspace:^",
     "eslint": "^9.39.1",
+    "jest": "^30.2.0",
     "tsup": "^8.5.1",
     "typescript": "^5.9.3"
   },
