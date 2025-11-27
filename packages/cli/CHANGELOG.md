@@ -1,5 +1,11 @@
 # @zistr/cli
 
+## 0.2.0
+
+### Minor Changes
+
+- 10a7e02: Fix issues for route modules consisting of imported TS/JS modules
+
 ## 0.1.1
 
 ### Patch Changes
