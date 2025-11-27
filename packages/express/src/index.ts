@@ -1,5 +1,6 @@
 export * from './createExpressHandler';
 export * from './createExpressRouter';
+export * from './requestContext';
 export * from './types';
 
 // Re-export everything from core package
