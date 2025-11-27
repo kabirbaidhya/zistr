@@ -9,13 +9,15 @@
     "check-types": "turbo run check-types",
     "check-format": "prettier --check .",
     "test": "turbo run test",
-    "clean": "turbo run clean"
+    "clean": "turbo run clean",
+    "publish-packages": "turbo run build lint test && changeset version && changeset publish"
   },
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
   "devDependencies": {
+    "@changesets/cli": "^2.29.7",
     "prettier": "^3.6.2",
     "turbo": "^2.6.1",
     "typescript": "^5.9.3"
