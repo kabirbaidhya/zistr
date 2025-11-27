@@ -4,7 +4,8 @@
   "description": "Zistr CLI",
   "license": "MIT",
   "files": [
-    "dist/**"
+    "dist",
+    "bin"
   ],
   "bin": {
     "zistr": "./bin/zistr"
