@@ -18,3 +18,23 @@ Total routes: 5
 ",
 }
 `;
+
+exports[`E2E: list-routes command should succeed for a valid route module consisting of more imported TS files 1`] = `
+{
+  "status": 0,
+  "stderr": "",
+  "stdout": "
+┌─────────┬──────────┬──────────────────────┬────────────────────────────────┐
+│ (index) │ Method   │ Path                 │ Handler                        │
+├─────────┼──────────┼──────────────────────┼────────────────────────────────┤
+│ 0       │ 'get'    │ '/test/orders'       │ 'OrdersController.listOrders'  │
+│ 1       │ 'post'   │ '/test/orders'       │ 'OrdersController.createOrder' │
+│ 2       │ 'get'    │ '/test/orders/:id'   │ 'OrdersController.getOrder'    │
+│ 3       │ 'put'    │ '/test/orders/:id'   │ 'OrdersController.updateOrder' │
+│ 4       │ 'delete' │ '/test/orders/:id'   │ 'OrdersController.deleteOrder' │
+│ 5       │ 'get'    │ '/test/simple/hello' │ 'SimpleController.sayHello'    │
+└─────────┴──────────┴──────────────────────┴────────────────────────────────┘
+Total routes: 6
+",
+}
+`;

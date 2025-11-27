@@ -36,4 +36,13 @@ describe('E2E: list-routes command', () => {
     expect(outputOf(result)).toMatchSnapshot();
     expect(result.stderr).toBe('');
   });
+
+  it('should succeed for a valid route module consisting of more imported TS files', () => {
+    const filePath = path.join(STUBS, 'routes-with-valid-imported-ts-controllers.ts');
+    const result = runCLI(['list-routes', '--routes-module', filePath]);
+
+    expect(result.status).toBe(0);
+    expect(outputOf(result)).toMatchSnapshot();
+    expect(result.stderr).toBe('');
+  });
 });

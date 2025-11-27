@@ -35,7 +35,9 @@ function resolveRoutesModulePath(customPath?: string): string {
 export async function loadRoutesModule(customPath?: string): Promise<RouteDefinition[]> {
   const resolvedPath = resolveRoutesModulePath(customPath);
 
-  const module = await import(resolvedPath);
+  // IMPORTANT: Dynamic require to support both JS and TS route modules
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const module = require(resolvedPath);
 
   if (!('routes' in module)) {
     throw new Error(`Routes module "${resolvedPath}" does not export routes.`);
