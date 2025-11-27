@@ -18,8 +18,8 @@ const SUPPORTED_METHODS = ['get', 'post', 'put', 'patch', 'delete', 'options', '
 /**
  * Create an Express router for each routes defined by the controllers.
  *
- * @param routes List of controller-defined routes.
- * @returns {Router} Express Router instance
+ * @param routes - List of controller-defined routes.
+ * @returns Express Router instance
  */
 export function createExpressRouter({ routes, middlewares }: Options): Router {
   const router = Router();

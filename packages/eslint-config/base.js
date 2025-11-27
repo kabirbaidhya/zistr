@@ -1,5 +1,6 @@
 import js from '@eslint/js';
 import turboPlugin from 'eslint-plugin-turbo';
+import tsDocPlugin from 'eslint-plugin-tsdoc';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 import { defineConfig, globalIgnores } from 'eslint/config';
@@ -27,11 +28,13 @@ export const config = defineConfig([
     },
     plugins: {
       turbo: turboPlugin,
+      tsdoc: tsDocPlugin,
     },
     rules: {
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': 'warn',
       'turbo/no-undeclared-env-vars': 'warn',
+      'tsdoc/syntax': 'error',
     },
   },
 ]);

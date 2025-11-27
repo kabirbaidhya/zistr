@@ -5,8 +5,8 @@ import type { ParsedQs } from 'qs';
 /**
  * Maps an Express Request object into a ZistrRequest instance.
  *
- * @param {ExpressRequest} req
- * @returns {ZistrRequest}
+ * @param req - The Express Request object.
+ * @returns An instance of ZistrRequest.
  */
 export function mapRequestToZistr<Body = unknown, Context extends RequestContext = RequestContext>(
   req: ExpressRequest
@@ -23,7 +23,7 @@ export function mapRequestToZistr<Body = unknown, Context extends RequestContext
     body: req.body as Body,
     query: req.query,
     params: req.params,
-    context: (req as any).context ?? ({} as Context),
+    context: (req as ExpressRequest & { context?: Context }).context ?? ({} as Context),
     cookies: req.cookies ?? {},
     signedCookies: req.signedCookies ?? {},
   });

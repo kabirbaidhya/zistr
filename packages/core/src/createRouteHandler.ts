@@ -67,7 +67,7 @@ const buildArgsForInjection = (req: ZistrRequest, paramsMeta: ParamMetadata[]): 
  * Create a route handler to handle incoming request
  * and execute the corresponding controller method.
  *
- * @returns {RouteHandlerFunction}
+ * @returns A route handler function.
  */
 export function createRouteHandler<T extends BaseController>(options: RouteHandlerOptions<T>): RouteHandlerFunction {
   return async (req: ZistrRequest) => {
