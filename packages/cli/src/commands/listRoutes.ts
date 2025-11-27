@@ -10,6 +10,7 @@ export const listRoutes = new Command()
   .action(async (opts) => {
     const routes: RouteDefinition[] = await loadRoutesModule(opts.routesModule);
 
+    console.log('');
     console.table(
       routes.map((r) => ({
         Method: r.requestMethod,

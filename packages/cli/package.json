@@ -15,11 +15,12 @@
     "build": "tsup src/index.ts --format cjs",
     "dev": "tsup src/index.ts --format cjs --watch",
     "lint": "eslint .",
-    "test": "jest --runInBand --config jest.config.cjs"
+    "test": "yarn build && jest --runInBand --config jest.config.cjs"
   },
   "dependencies": {
     "@zistr/core": "0.1.0",
-    "commander": "^12.0.0"
+    "commander": "^12.0.0",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "@zistr/eslint-config": "workspace:^",
