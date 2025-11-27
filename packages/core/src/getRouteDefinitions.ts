@@ -51,7 +51,7 @@ function getControllerInstance<T extends BaseController>(cls: ControllerConstruc
 /**
  * Get the route definitions from a list of controllers.
  *
- * @param controllerClasses An array of controller classes, that extends BaseController.
+ * @param controllerClasses - An array of controller classes, that extends BaseController.
  * @returns A list of routes defined by the provided controllers.
  */
 export function getRouteDefinitions<T extends readonly ControllerConstructor<BaseController>[]>(
