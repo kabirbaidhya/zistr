@@ -11,7 +11,8 @@
   ],
   "scripts": {
     "test:unit": "jest --runInBand --config jest.config.cjs",
-    "test": "yarn test:unit",
+    "test:e2e": "yarn build && jest --runInBand --config jest.e2e.config.cjs",
+    "test": "yarn test:unit && yarn test:e2e",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "build": "tsup src/index.ts --format cjs,esm --dts",
     "dev": "tsup src/index.ts --format cjs,esm --dts --watch",

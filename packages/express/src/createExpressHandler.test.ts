@@ -211,7 +211,7 @@ describe('createExpressHandler', () => {
     expect(mockNext.mock.calls[0][0]).toBeInstanceOf(Error);
   });
 
-  it('continues and sends JSON even if status is undefined (invalid ControllerResult)', async () => {
+  it('continues and sends JSON even if status is undefined', async () => {
     const routeDefinition: any = {
       ...testRoute,
       routeHandler: jest.fn().mockResolvedValue({
@@ -225,9 +225,7 @@ describe('createExpressHandler', () => {
 
     await handler(req, res, mockNext);
 
-    // Current behavior: will call status(undefined) → not great,
-    // but test should reflect current logic unless you change it.
-    expect(res.status).toHaveBeenCalledWith(undefined);
+    expect(res.status).toHaveBeenCalledWith(200); // default status
     expect(res.json).toHaveBeenCalledWith({
       ok: true,
     });
