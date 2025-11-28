@@ -7,6 +7,9 @@ import debug from 'debug';
 
 const debugLog = debug(DEBUG_EXPRESS_EXECUTION);
 
+const DEFAULT_STATUS_NO_CONTENT = 204;
+const DEFAULT_STATUS = 200;
+
 /**
  * Creates an Express-compatible request handler for a given controller method.
  */
@@ -43,7 +46,7 @@ export function createExpressHandler(routeDefinition: RouteDefinition) {
 
       // If data is empty, send empty response
       if (data === null || data === undefined) {
-        res.status(status ?? 204).end();
+        res.status(status ?? DEFAULT_STATUS_NO_CONTENT).end();
         return;
       }
 
@@ -54,9 +57,9 @@ export function createExpressHandler(routeDefinition: RouteDefinition) {
 
       // Send response
       if (contentType === 'text/plain' || typeof data === 'string') {
-        res.status(status).send(data);
+        res.status(status ?? DEFAULT_STATUS).send(data);
       } else {
-        res.status(status).json(data);
+        res.status(status ?? DEFAULT_STATUS).json(data);
       }
     } catch (err) {
       debugLog(`error - ${req.method} ${req.originalUrl}:`, err);

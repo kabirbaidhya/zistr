@@ -1,4 +1,4 @@
-import { BaseController, Controller, Get, Post, Put, Delete, ReqBody, Query, Params, BaseDto } from '../../../index';
+import { BaseController, Controller, Get, Post, Put, Delete, ReqBody, Query, Params, BaseDto } from '@zistr/core';
 
 /**
  * DTO with validation.

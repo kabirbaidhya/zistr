@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import request from 'supertest';
 import express, { json, Request as ExpressRequest, Response } from 'express';
+import { getRouteDefinitions, RouteDefinition, ZistrRequest } from '@zistr/core';
 
-import { getRouteDefinitions, RouteDefinition, ZistrRequest } from '../../index';
 import { OrdersController } from './helpers/stub';
 
 function mapExpressRequestToZistr(req: ExpressRequest): ZistrRequest {

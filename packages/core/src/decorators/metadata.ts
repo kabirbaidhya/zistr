@@ -22,9 +22,9 @@ export enum ParamType {
 /*                                Base Path                                   */
 /* -------------------------------------------------------------------------- */
 
-export const setBasePath = (basePath: string, target: object) => {
+export const setBasePath = (basePath: string, target: Function) => {
   Reflect.defineMetadata(BASE_PATH_KEY, basePath, target);
-  debugLog(`set base path for ${target}`, { basePath });
+  debugLog(`set base path for ${target?.name}`, { basePath });
 };
 
 export const getBasePath = (target: object): string | undefined => Reflect.getMetadata(BASE_PATH_KEY, target);
@@ -34,14 +34,14 @@ export const isBasePathSet = (target: object) => Reflect.hasMetadata(ROUTES_KEY,
 /*                                Routes                                      */
 /* -------------------------------------------------------------------------- */
 
-export const setRoutes = (routes: RouteMetadata[], target: object) => {
+export const setRoutes = (routes: RouteMetadata[], target: Function) => {
   Reflect.defineMetadata(ROUTES_KEY, routes, target);
-  debugLog(`set routes for ${target}`, { routes });
+  debugLog(`set routes for ${target?.name}`, { routes });
 };
 
 export const getRoutes = (target: object): RouteMetadata[] => Reflect.getMetadata(ROUTES_KEY, target) || [];
 
-export const addRoute = (route: RouteMetadata, target: object) => {
+export const addRoute = (route: RouteMetadata, target: Function) => {
   const routes = getRoutes(target);
   routes.push(route);
   setRoutes(routes, target);
@@ -52,7 +52,7 @@ export const addRoute = (route: RouteMetadata, target: object) => {
 
 export const setParams = (params: ParamMetadata[], target: object, propertyKey: string | symbol) => {
   Reflect.defineMetadata(PARAMS_KEY, params, target, propertyKey);
-  debugLog(`set params for ${String(propertyKey)}`, { params });
+  debugLog(`set params for property - ${String(propertyKey)}`, { params });
 };
 
 export const getParams = (target: object, propertyKey: string | symbol): ParamMetadata[] =>
@@ -60,7 +60,8 @@ export const getParams = (target: object, propertyKey: string | symbol): ParamMe
 
 export const addParam = (param: ParamMetadata, target: object, propertyKey: string | symbol) => {
   const params = getParams(target, propertyKey);
-  params.push(param);
+  // write in correct slot because the param decorators are evaluated in reverse order
+  params[param.index] = param;
   setParams(params, target, propertyKey);
 };
 

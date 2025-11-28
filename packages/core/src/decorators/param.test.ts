@@ -83,9 +83,9 @@ describe('Decorators: Param', () => {
 
     expect(params).toHaveLength(3);
     expect(params).toStrictEqual([
-      { index: 2, type: ParamType.REQUEST, dto: undefined },
-      { index: 1, type: ParamType.QUERY, dto: undefined },
       { index: 0, type: ParamType.BODY, dto: MyDto },
+      { index: 1, type: ParamType.QUERY, dto: undefined },
+      { index: 2, type: ParamType.REQUEST, dto: undefined },
     ]);
   });
 

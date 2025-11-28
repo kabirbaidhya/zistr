@@ -52,10 +52,21 @@ const buildArgsForInjection = (req: ZistrRequest, paramsMeta: ParamMetadata[]): 
     // If it's a data-containing param and DTO class exists,
     // hydrate the object and validate before injecting.
     if (isDataContainingParam(meta.type) && meta.dto && meta.dto.prototype instanceof BaseDto) {
+      debugLog('hydrating dto with data', { dto: meta.dto.name, data: value });
       const dtoInstance = new meta.dto(value);
-      dtoInstance.validate();
+      try {
+        debugLog('invoking validation', { dto: meta.dto.name, data: value });
+        dtoInstance.validate();
+        debugLog('validation passed', { dtoInstance });
+      } catch (error: unknown) {
+        debugLog('validation failed', { dtoInstance, error });
+        throw error;
+      }
+
+      debugLog('injecting arg', { index: meta.index, value: dtoInstance });
       args[meta.index] = dtoInstance;
     } else {
+      debugLog('injecting arg', { index: meta.index, value });
       args[meta.index] = value;
     }
   }
@@ -89,7 +100,7 @@ export function createRouteHandler<T extends BaseController>(options: RouteHandl
     const controllerMethod = (options.controllerInstance as any)[options.methodName] as RequestControllerMethod;
 
     const result = await controllerMethod(...args);
-    debugLog('returning result', result);
+    debugLog('handler result', result);
 
     return result;
   };

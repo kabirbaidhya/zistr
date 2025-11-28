@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Get, ZistrRequest } from '../../index';
-import { getRouteDefinitions, RouteDefinition } from '../../index';
+import { Get, ZistrRequest } from '@zistr/core';
+import { getRouteDefinitions, RouteDefinition } from '@zistr/core';
+
 import { TestRouteInvoker } from './helpers/TestRouteInvoker';
 import { OrdersController } from './helpers/stub';
 
 const routes: RouteDefinition[] = getRouteDefinitions([OrdersController]);
 const invoker = new TestRouteInvoker(routes);
 
-describe('Core E2E: Routes Invocation', () => {
+describe('E2E: Routes Invocation', () => {
   it('Route Discovery: finds a route', async () => {
     const result = await invoker.invoke('get', '/orders', {});
     expect(result).toHaveProperty('query');
@@ -86,6 +87,7 @@ describe('Core E2E: Routes Invocation', () => {
         throw new Error('Controller failure');
       }
     }
+
     const errRoutes = getRouteDefinitions([ErrorController]);
     const errInvoker = new TestRouteInvoker(errRoutes);
     await expect(errInvoker.invoke('get', '/fail', {})).rejects.toThrow('Controller failure');

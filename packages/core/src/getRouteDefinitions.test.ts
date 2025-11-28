@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Controller, Get, Post, ReqBody, Query, Params, Req, ReqContext } from './decorators';
+import { Controller, Post, ReqBody, Query, Params, Get, Req, ReqContext } from './decorators';
 import { getRouteDefinitions } from './getRouteDefinitions';
 import { BaseDto } from './BaseDto';
 import { ParamType } from './decorators/metadata';
@@ -62,27 +62,26 @@ describe('getRouteDefinitions', () => {
     }
 
     @Controller('/api')
-    class MultiParamController extends BaseController {
+    class TestController extends BaseController {
       @Post('/')
-      multiParams(@ReqBody() _body: MyBodyDto, @Query() _query: MyQueryDto, @Params() _params: MyParams) {}
+      testMethod(@ReqBody() _body: MyBodyDto, @Query() _query: MyQueryDto, @Params() _params: MyParams) {}
     }
 
-    const routes = getRouteDefinitions([MultiParamController]);
+    const routes = getRouteDefinitions([TestController]);
     expect(routes).toHaveLength(1);
 
     const route = routes[0];
     expect(route.path).toBe('/api');
     expect(route.requestMethod).toBe('post');
-    expect(route.methodName).toBe('multiParams');
-    expect(route.controllerName).toBe('MultiParamController');
+    expect(route.methodName).toBe('testMethod');
+    expect(route.controllerName).toBe('TestController');
     expect(route.routeHandler).toEqual(expect.any(Function));
 
     expect(route.params).toHaveLength(3);
-
     expect(route.params).toEqual([
-      { index: 2, type: ParamType.PARAMS, dto: undefined },
-      { index: 1, type: ParamType.QUERY, dto: MyQueryDto },
       { index: 0, type: ParamType.BODY, dto: MyBodyDto },
+      { index: 1, type: ParamType.QUERY, dto: MyQueryDto },
+      { index: 2, type: ParamType.PARAMS, dto: undefined },
     ]);
   });
 });
