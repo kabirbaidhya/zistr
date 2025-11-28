@@ -1,7 +1,7 @@
 {
   "name": "@zistr/express",
   "description": "A lightweight add-on that brings structure to your Express applications with well-defined, strongly-typed route handlers",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "license": "MIT",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -35,7 +35,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@zistr/core": "0.1.0",
+    "@zistr/core": "0.2.0",
     "debug": "^4.4.3",
     "qs": "^6.14.0",
     "reflect-metadata": "^0.2.2"

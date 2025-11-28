@@ -1,5 +1,13 @@
 # @zistr/cli
 
+## 0.2.1
+
+### Patch Changes
+
+- Updated dependencies [df0b73d]
+- Updated dependencies [2dedc45]
+  - @zistr/core@0.2.0
+
 ## 0.2.0
 
 ### Minor Changes
