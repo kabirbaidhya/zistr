@@ -8,7 +8,7 @@ import { OrdersController } from './helpers/stub';
 const routes: RouteDefinition[] = getRouteDefinitions([OrdersController]);
 const invoker = new TestRouteInvoker(routes);
 
-describe('Core E2E: Routes Invocation', () => {
+describe('E2E: Routes Invocation', () => {
   it('Route Discovery: finds a route', async () => {
     const result = await invoker.invoke('get', '/orders', {});
     expect(result).toHaveProperty('query');
