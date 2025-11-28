@@ -4,8 +4,8 @@
 export abstract class BaseController {}
 
 export interface ControllerResult<ResBody = any> {
-  status: number;
   data: ResBody;
+  status?: number;
   contentType?: string;
 }
 
