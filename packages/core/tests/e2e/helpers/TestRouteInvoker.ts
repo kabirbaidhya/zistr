@@ -1,4 +1,4 @@
-import { ZistrRequest, RouteDefinition, SupportedHttpMethod } from '../../../index';
+import { ZistrRequest, RouteDefinition, SupportedHttpMethod } from '@zistr/core';
 
 /**
  * Only the properties of ZistrRequest that make sense for test invocation.
