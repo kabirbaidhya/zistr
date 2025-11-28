@@ -1,6 +1,6 @@
 {
   "name": "@zistr/cli",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Zistr CLI",
   "license": "MIT",
   "files": [
@@ -19,7 +19,7 @@
     "test": "yarn build && jest --runInBand --config jest.config.cjs"
   },
   "dependencies": {
-    "@zistr/core": "0.1.0",
+    "@zistr/core": "0.2.0",
     "commander": "^12.0.0",
     "ts-node": "^10.9.2"
   },

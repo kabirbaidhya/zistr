@@ -1,5 +1,17 @@
 # @zistr/express
 
+## 0.4.0
+
+### Minor Changes
+
+- f855b88: Handle undefined status in the controller result
+
+### Patch Changes
+
+- Updated dependencies [df0b73d]
+- Updated dependencies [2dedc45]
+  - @zistr/core@0.2.0
+
 ## 0.3.1
 
 ### Patch Changes
