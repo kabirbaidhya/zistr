@@ -49,7 +49,7 @@ export const Params = createDataParamDecorator(ParamType.PARAMS);
 export const Query = createDataParamDecorator(ParamType.QUERY);
 
 /**
- * Injects the raw HTTP request object into the decorated controller method parameter.
+ * Injects the raw HTTP request object (ZistrRequest) into the decorated controller method parameter.
  * Use this when you need access to headers, cookies, protocol, etc.
  */
 export const Req = createGenericParamDecorator(ParamType.REQUEST);

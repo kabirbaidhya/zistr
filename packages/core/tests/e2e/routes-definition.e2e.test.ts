@@ -129,6 +129,42 @@ describe('E2E: Routes Definition', () => {
     );
   });
 
+  it('should handle duplicate slashes in path correctly', () => {
+    @Controller('/api/')
+    class SimpleController extends BaseController {
+      @Get('/hello')
+      testOne() {}
+
+      @Get('hello/again')
+      testTwo() {}
+
+      otherMethod() {}
+    }
+
+    const routes = getRouteDefinitions([SimpleController]);
+    expect(routes).toHaveLength(2);
+    expect(routes[0]).toStrictEqual(
+      expect.objectContaining({
+        path: '/api/hello',
+        requestMethod: 'get',
+        methodName: 'testOne',
+        controllerName: 'SimpleController',
+        params: [],
+        routeHandler: expect.any(Function),
+      })
+    );
+    expect(routes[1]).toStrictEqual(
+      expect.objectContaining({
+        path: '/api/hello/again',
+        requestMethod: 'get',
+        methodName: 'testTwo',
+        controllerName: 'SimpleController',
+        params: [],
+        routeHandler: expect.any(Function),
+      })
+    );
+  });
+
   it('should define all method and parameter decorators correctly', () => {
     @Controller('/example')
     class FullController extends BaseController {
