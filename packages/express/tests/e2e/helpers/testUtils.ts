@@ -1,5 +1,6 @@
 import express, { json } from 'express';
-import { createExpressRouter, EnrichedRequest, requestContext, RouteDefinition } from '@zistr/express';
+import { createExpressRouter, EnrichedRequest, RouteDefinition } from '@zistr/express';
+import { requestContext } from '@zistr/express/middlewares';
 
 import { DummyValidationError } from './stub';
 

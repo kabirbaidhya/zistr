@@ -1,7 +1,12 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "@zistr/typescript-config/base.json",
   "compilerOptions": {
-    "outDir": "dist"
+    "outDir": "dist",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "declaration": true,
+    "declarationMap": true
   },
   "include": ["src", "tests"],
   "exclude": ["node_modules", "dist"]

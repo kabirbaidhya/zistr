@@ -1,7 +1,9 @@
 {
   "extends": "@zistr/typescript-config/base.json",
   "compilerOptions": {
-    "outDir": "dist"
+    "outDir": "dist",
+    "module": "commonjs", // override for CLI (Need to be able to resolve route modules in the target projects)
+    "moduleResolution": "node" // standard CJS resolution
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]
