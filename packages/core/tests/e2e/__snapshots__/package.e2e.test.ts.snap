@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`E2E: Package should export core utilities 1`] = `
+{
+  "BaseController": [Function],
+  "BaseDto": [Function],
+  "Controller": [Function],
+  "Delete": [Function],
+  "Get": [Function],
+  "Params": [Function],
+  "Patch": [Function],
+  "Post": [Function],
+  "Put": [Function],
+  "Query": [Function],
+  "Req": [Function],
+  "ReqBody": [Function],
+  "ReqContext": [Function],
+  "RouteDefinition": [Function],
+  "ZistrRequest": [Function],
+  "getRouteDefinitions": [Function],
+}
+`;
