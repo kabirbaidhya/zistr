@@ -1,5 +1,11 @@
 # @zistr/express
 
+## 0.5.0
+
+### Minor Changes
+
+- bfd0c04: Expose express middlewares via `/middlewares` sub-path
+
 ## 0.4.0
 
 ### Minor Changes
