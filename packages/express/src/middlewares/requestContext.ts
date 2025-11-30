@@ -2,15 +2,15 @@ import { NextFunction, Response } from 'express';
 import debug from 'debug';
 import { RequestContext } from '@zistr/core';
 
-import { EnrichedRequest } from './types';
-import { DEBUG_EXPRESS_EXECUTION } from './constants';
+import { EnrichedRequest } from '../types';
+import { DEBUG_EXPRESS_EXECUTION } from '../constants';
 
 export type ContextSetterFunction = (req: EnrichedRequest) => RequestContext;
 
 const debugLog = debug(DEBUG_EXPRESS_EXECUTION);
 
 /**
- * Initialise Express request context.
+ * Returns a middleware to initialise Express request context.
  */
 export const requestContext =
   (contextSetter?: ContextSetterFunction) => (req: EnrichedRequest, _: Response, next: NextFunction) => {

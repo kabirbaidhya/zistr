@@ -3,7 +3,7 @@ import { RequestHandler, Router } from 'express';
 import { RouteDefinition } from '@zistr/core';
 
 import { createExpressHandler } from './createExpressHandler';
-import { requestContext } from './requestContext';
+import { requestContext } from './middlewares';
 import { DEBUG_EXPRESS_DEFINITION } from './constants';
 
 interface Options {
