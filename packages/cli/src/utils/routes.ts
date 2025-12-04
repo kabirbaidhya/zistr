@@ -6,10 +6,7 @@ import type { RouteDefinition } from '@zistr/core';
 const DEFAULT_LOCATIONS = ['./src/routes.ts', './routes.ts'];
 
 // Register ts-node once so we can import TS files dynamically
-register({
-  transpileOnly: true,
-  compilerOptions: { module: 'CommonJS', esModuleInterop: true },
-});
+register({ transpileOnly: true });
 
 /**
  * Resolves routes module path. Throws if no routes module could be located.
