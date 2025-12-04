@@ -1,5 +1,11 @@
 # @zistr/cli
 
+## 0.3.0
+
+### Minor Changes
+
+- 312c259: Remove TS complierOptions from ts-node require config for loading route modules
+
 ## 0.2.1
 
 ### Patch Changes
