@@ -1,6 +1,6 @@
 {
   "name": "@zistr/cli",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Zistr CLI",
   "license": "MIT",
   "files": [
