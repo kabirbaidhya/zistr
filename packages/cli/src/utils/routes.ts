@@ -29,7 +29,9 @@ function resolveRoutesModulePath(customPath?: string): string {
  * Loads a module exporting `routes: RouteDefinition[]`.
  * Throws if the module doesn't exist or exports invalid data.
  */
-export async function loadRoutesModule(customPath?: string): Promise<RouteDefinition[]> {
+export async function loadRoutesModule(
+  customPath?: string
+): Promise<{ routes: RouteDefinition[]; resolvedPath: string }> {
   const resolvedPath = resolveRoutesModulePath(customPath);
 
   // IMPORTANT: Dynamic require to support both JS and TS route modules
@@ -44,5 +46,8 @@ export async function loadRoutesModule(customPath?: string): Promise<RouteDefini
     throw new Error(`Routes module "${resolvedPath}" exports invalid routes.`);
   }
 
-  return module.routes as RouteDefinition[];
+  return {
+    routes: module.routes as RouteDefinition[],
+    resolvedPath,
+  };
 }
