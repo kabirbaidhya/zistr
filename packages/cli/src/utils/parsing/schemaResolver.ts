@@ -7,40 +7,54 @@ export interface SchemaObject {
   $ref?: string;
 }
 
-export function resolveTypeSchema(type: Type): SchemaObject {
+export interface ResolveSchemaOptions {
+  /** Whether to ignore methods when building object schemas */
+  ignoreMethods?: boolean;
+}
+
+export function resolveTypeSchema(type: Type, opts?: { ignoreMethods?: boolean }): SchemaObject {
   if (type.isString()) return { type: 'string' };
   if (type.isNumber()) return { type: 'number' };
   if (type.isBoolean()) return { type: 'boolean' };
 
   if (type.isArray()) {
     const elem = type.getArrayElementTypeOrThrow();
-    return {
-      type: 'array',
-      items: resolveTypeSchema(elem),
-    };
+    return { type: 'array', items: resolveTypeSchema(elem, opts) };
   }
 
-  if (type.isObject() && !type.isAnonymous()) {
-    return {
-      type: 'object',
-      properties: resolveObjectSchema(type),
-    };
+  if (type.isObject()) {
+    const props: Record<string, SchemaObject> = {};
+    for (const prop of type.getProperties()) {
+      const decl = prop.getValueDeclaration();
+      if (!decl) continue;
+
+      const propType = decl.getType();
+
+      // skip methods if requested
+      if (opts?.ignoreMethods && propType.getCallSignatures().length > 0) continue;
+
+      props[prop.getName()] = resolveTypeSchema(propType, opts);
+    }
+    return { type: 'object', properties: props };
   }
 
   return { type: 'string' }; // fallback
 }
 
-function resolveObjectSchema(type: Type): Record<string, SchemaObject> {
-  const props = type.getProperties();
-  const out: Record<string, SchemaObject> = {};
+// function resolveObjectSchema(type: Type, options: ResolveSchemaOptions = {}): Record<string, SchemaObject> {
+//   const props = type.getProperties();
+//   const out: Record<string, SchemaObject> = {};
 
-  for (const prop of props) {
-    const decl = prop.getValueDeclaration();
-    if (!decl) continue;
+//   for (const prop of props) {
+//     // Skip methods if ignoreMethods option is true
+//     const decl = prop.getValueDeclaration();
+//     if (!decl) continue;
 
-    const propType = decl.getType();
-    out[prop.getName()] = resolveTypeSchema(propType);
-  }
+//     if (options.ignoreMethods && decl.getKindName?.() === 'MethodDeclaration') continue;
 
-  return out;
-}
+//     const propType = decl.getType();
+//     out[prop.getName()] = resolveTypeSchema(propType, options);
+//   }
+
+//   return out;
+// }

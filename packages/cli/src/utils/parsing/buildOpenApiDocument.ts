@@ -10,23 +10,17 @@ function extractResponseType(type: Type): Type {
   // unwrap Promise<T>
   if (type.getSymbol()?.getName() === 'Promise') {
     const typeArgs = type.getTypeArguments();
-    if (typeArgs.length === 1) {
-      type = typeArgs[0];
-    }
+    if (typeArgs.length === 1) type = typeArgs[0];
   }
 
   // unwrap ControllerResult<T>
   if (type.getSymbol()?.getName() === 'ControllerResult') {
     const typeArgs = type.getTypeArguments();
-    if (typeArgs.length === 1) {
-      return typeArgs[0]; // the actual data type
-    } else {
-      // ControllerResult<any> or ControllerResult without generic
-      return type.getTypeArguments()[0] ?? type.getApparentType(); // fallback to any
-    }
+    return typeArgs.length === 1 ? typeArgs[0] : type.getApparentType();
   }
 
-  return type;
+  // fallback to apparent type to avoid empty schemas
+  return type.getApparentType();
 }
 
 interface OpenApiParameter {
@@ -109,48 +103,33 @@ export function buildOpenApiDocument(
     const parameters: OpenApiParameter[] = [];
     let requestBody: OpenApiOperation['requestBody'];
 
-    // Detect parameter type from decorator: assume name + type from ts-morph
+    // handle parameters and request body
     for (const p of method.params) {
-      const name = p.name;
-      const schema = resolveTypeSchema(p.type);
-
-      if (name === 'body' || p.jsDoc?.toLowerCase().includes('@reqbody')) {
+      if (p.decorator === 'ReqBody') {
         requestBody = {
           required: true,
           description: p.jsDoc,
           content: {
             'application/json': {
-              schema,
+              schema: resolveTypeSchema(p.type, { ignoreMethods: true }),
             },
           },
         };
-      } else if (name === 'params') {
-        // Path parameters
-        const pathParamMatches = routePath.match(/:([a-zA-Z0-9_]+)/g);
-        if (pathParamMatches) {
-          pathParamMatches.forEach((param) => {
-            parameters.push({
-              name: param.slice(1),
-              in: 'path',
-              required: true,
-              schema: { type: 'string' },
-            });
-          });
-        }
-      } else {
-        // Default to query parameter
+      } else if (p.decorator === 'Params' || p.decorator === 'Query') {
         parameters.push({
-          name,
-          in: 'query',
-          schema,
+          name: p.name,
+          in: p.decorator === 'Params' ? 'path' : 'query',
+          required: p.decorator === 'Params',
+          schema: resolveTypeSchema(p.type, { ignoreMethods: true }),
         });
       }
     }
 
     if (!paths[routePath]) paths[routePath] = {};
 
-    // Usage inside your method loop:
-    const responseSchema = resolveTypeSchema(extractResponseType(method.returnType));
+    // handle response schema
+    const responseType = extractResponseType(method.returnType);
+    const responseSchema = resolveTypeSchema(responseType, { ignoreMethods: true });
 
     paths[routePath][requestMethod.toLowerCase() as keyof OpenApiPaths[string]] = {
       summary: method.jsDoc?.split('\n')[0],
