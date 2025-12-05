@@ -1,7 +1,33 @@
+import { Type } from 'ts-morph';
+import { RouteDefinition } from '@zistr/core';
 import { ParsedRouteController } from './controllerParser';
 import { resolveTypeSchema } from './schemaResolver';
 
-import { RouteDefinition } from '@zistr/core';
+/**
+ * Unwrap Promise and ControllerResult types to get the actual response body type
+ */
+function extractResponseType(type: Type): Type {
+  // unwrap Promise<T>
+  if (type.getSymbol()?.getName() === 'Promise') {
+    const typeArgs = type.getTypeArguments();
+    if (typeArgs.length === 1) {
+      type = typeArgs[0];
+    }
+  }
+
+  // unwrap ControllerResult<T>
+  if (type.getSymbol()?.getName() === 'ControllerResult') {
+    const typeArgs = type.getTypeArguments();
+    if (typeArgs.length === 1) {
+      return typeArgs[0]; // the actual data type
+    } else {
+      // ControllerResult<any> or ControllerResult without generic
+      return type.getTypeArguments()[0] ?? type.getApparentType(); // fallback to any
+    }
+  }
+
+  return type;
+}
 
 interface OpenApiParameter {
   name: string;
@@ -123,6 +149,9 @@ export function buildOpenApiDocument(
 
     if (!paths[routePath]) paths[routePath] = {};
 
+    // Usage inside your method loop:
+    const responseSchema = resolveTypeSchema(extractResponseType(method.returnType));
+
     paths[routePath][requestMethod.toLowerCase() as keyof OpenApiPaths[string]] = {
       summary: method.jsDoc?.split('\n')[0],
       description: method.jsDoc,
@@ -133,7 +162,7 @@ export function buildOpenApiDocument(
           description: 'Success',
           content: {
             'application/json': {
-              schema: resolveTypeSchema(method.returnType),
+              schema: responseSchema,
             },
           },
         },
