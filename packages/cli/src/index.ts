@@ -14,10 +14,9 @@ async function main() {
     program.addCommand(generateOpenApi);
 
     await program.parseAsync();
-    // process.exit(0);
   } catch (err) {
     console.error('❌ Error:', (err instanceof Error ? err.message : err) || 'An error occurred.');
-    // process.exit(1);
+    process.exit(1);
   }
 }
 
