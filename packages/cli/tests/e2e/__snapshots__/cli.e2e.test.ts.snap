@@ -9,17 +9,18 @@ exports[`E2E: CLI general options should display help with --help 1`] = `
 Zistr CLI
 
 Options:
-  -V, --version          output the version number
-  -h, --help             display help for command
+  -V, --version                output the version number
+  -h, --help                   display help for command
 
 Commands:
-  list-routes [options]  List all registered routes
-  help [command]         display help for command
+  list-routes [options]        List all registered routes
+  generate-open-api [options]  Generate OpenAPI spec from the defined routes
+  help [command]               display help for command
 ",
 }
 `;
 
-exports[`E2E: CLI general options should run the CLI executable directly without crashing 1`] = `
+exports[`E2E: CLI general options should run the CLI executable and display commands  1`] = `
 {
   "status": 1,
   "stderr": "Usage: zistr [options] [command]
@@ -27,12 +28,13 @@ exports[`E2E: CLI general options should run the CLI executable directly without
 Zistr CLI
 
 Options:
-  -V, --version          output the version number
-  -h, --help             display help for command
+  -V, --version                output the version number
+  -h, --help                   display help for command
 
 Commands:
-  list-routes [options]  List all registered routes
-  help [command]         display help for command
+  list-routes [options]        List all registered routes
+  generate-open-api [options]  Generate OpenAPI spec from the defined routes
+  help [command]               display help for command
 ",
   "stdout": "",
 }
