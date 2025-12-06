@@ -1,5 +1,4 @@
 import { Command } from 'commander';
-import type { RouteDefinition } from '@zistr/core';
 
 import { loadRoutesModule } from '../utils/routes';
 
@@ -8,7 +7,7 @@ export const listRoutes = new Command()
   .description('List all registered routes')
   .option('--routes-module <path>', 'Path to routes module. Defaults to ./src/routes.ts or ./routes.ts')
   .action(async (opts) => {
-    const routes: RouteDefinition[] = await loadRoutesModule(opts.routesModule);
+    const { routes } = await loadRoutesModule(opts.routesModule);
 
     console.log('');
     console.table(
