@@ -6,6 +6,13 @@ describe('E2E: CLI general options', () => {
   it('should run the CLI executable directly without crashing', () => {
     const result = runCLI();
 
+    expect(result.output).toBeDefined();
+    expect(result.output?.join('\n')).toContain('Usage: zistr');
+  });
+
+  it('should run the CLI executable and display commands ', () => {
+    const result = runCLI();
+
     expect(outputOf(result)).toMatchSnapshot();
   });
 
