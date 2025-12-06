@@ -1,25 +1,30 @@
 import { Type } from 'ts-morph';
-import { RouteDefinition } from '@zistr/core';
+import { ParamType, RouteDefinition, ControllerResultSymbol } from '@zistr/core';
 import { ParsedRouteController } from './controllerParser';
 import { resolveTypeSchema } from './schemaResolver';
 
 /**
- * Unwrap Promise and ControllerResult types to get the actual response body type
+ * Unwrap Promise<T> and ControllerResult<T> to get the actual response body type
  */
 function extractResponseType(type: Type): Type {
-  // unwrap Promise<T>
-  if (type.getSymbol()?.getName() === 'Promise') {
-    const typeArgs = type.getTypeArguments();
-    if (typeArgs.length === 1) type = typeArgs[0];
+  const symbol = type.getSymbol();
+
+  // unwrap native Promise<T>
+  if (symbol) {
+    const fqName = symbol.getFullyQualifiedName();
+    if (fqName === 'Promise' || fqName === 'global.Promise') {
+      const typeArgs = type.getTypeArguments();
+      if (typeArgs.length === 1) type = typeArgs[0];
+    }
   }
 
-  // unwrap ControllerResult<T>
-  if (type.getSymbol()?.getName() === 'ControllerResult') {
+  // unwrap ControllerResult<T> (type-only) using symbol
+  if (symbol === ControllerResultSymbol) {
     const typeArgs = type.getTypeArguments();
     return typeArgs.length === 1 ? typeArgs[0] : type.getApparentType();
   }
 
-  // fallback to apparent type to avoid empty schemas
+  // fallback to apparent type
   return type.getApparentType();
 }
 
@@ -94,35 +99,55 @@ export function buildOpenApiDocument(
       continue;
     }
 
-    const method = (ctrl as any).methodMap.get(methodName);
+    const method = ctrl.methodMap.get(methodName);
     if (!method) {
       console.warn(`⚠️ Method ${methodName} not found in controller ${controllerName}`);
       continue;
     }
 
+    // Map AST parameter name → Type & JSDoc for quick lookup
+    const astParamMap = new Map(
+      method.methodDecl.getParameters().map((p) => [
+        p.getName(),
+        {
+          type: p.getType(),
+          jsDoc: p
+            .getJsDocs()
+            .map((d) => d.getComment() ?? '')
+            .join('\n'),
+        },
+      ])
+    );
+
     const parameters: OpenApiParameter[] = [];
     let requestBody: OpenApiOperation['requestBody'];
 
-    // handle parameters and request body
-    for (const p of method.params) {
-      if (p.decorator === 'ReqBody') {
+    // Use RouteDefinition param info for decorator/type
+    for (const p of route.params) {
+      const astParam = method.methodDecl.getParameters()[p.index];
+      if (!astParam) continue;
+
+      const { type, jsDoc } = astParamMap.get(astParam.getName())!;
+
+      if (p.type === ParamType.BODY) {
         requestBody = {
           required: true,
-          description: p.jsDoc,
+          description: jsDoc,
           content: {
             'application/json': {
-              schema: resolveTypeSchema(p.type, { ignoreMethods: true }),
+              schema: resolveTypeSchema(type, { ignoreMethods: true }),
             },
           },
         };
-      } else if (p.decorator === 'Params' || p.decorator === 'Query') {
+      } else if (p.type === ParamType.PARAMS || p.type === ParamType.QUERY) {
         parameters.push({
-          name: p.name,
-          in: p.decorator === 'Params' ? 'path' : 'query',
-          required: p.decorator === 'Params',
-          schema: resolveTypeSchema(p.type, { ignoreMethods: true }),
+          name: astParam.getName(),
+          in: p.type === ParamType.PARAMS ? 'path' : 'query',
+          required: p.type === ParamType.PARAMS,
+          schema: resolveTypeSchema(type, { ignoreMethods: true }),
         });
       }
+      // Other ParamTypes (REQUEST, REQUEST_CONTEXT) are ignored for OpenAPI
     }
 
     if (!paths[routePath]) paths[routePath] = {};

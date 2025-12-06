@@ -9,6 +9,7 @@ import {
   Node,
   Identifier,
 } from 'ts-morph';
+import { ParamType, getParams as getRuntimeParams } from '@zistr/core'; // import runtime decorator info
 
 export interface ParsedRouteController {
   className: string;
@@ -20,6 +21,8 @@ export interface ParsedRouteController {
     params: {
       name: string;
       type: Type;
+      decoratorType?: ParamType;
+      dto?: any;
     }[];
     jsDoc?: string;
   }[];
@@ -32,24 +35,19 @@ function resolveClassFromIdentifier(ident: Identifier, project: Project): ClassD
   const symbol = ident.getSymbolOrThrow();
   const decls = symbol.getDeclarations();
 
-  // Helper: try to locate a ClassDeclaration from declarations
   const findClassDecl = (nodes: Node[]): ClassDeclaration | undefined => {
     for (const n of nodes) {
       if (n.getKind() === SyntaxKind.ClassDeclaration) {
         return n.asKindOrThrow(SyntaxKind.ClassDeclaration);
       }
-
-      // Sometimes inside ExportSpecifier → ClassDecl is ancestor
       const ancestor = n.getFirstAncestorByKind(SyntaxKind.ClassDeclaration);
       if (ancestor) return ancestor;
     }
     return undefined;
   };
 
-  // 1) Try direct declarations
   let classDecl = findClassDecl(decls);
 
-  // 2) If imported → resolve alias
   if (!classDecl) {
     const aliased = symbol.getAliasedSymbol?.();
     if (aliased) {
@@ -83,16 +81,13 @@ export function parseControllersFromRoutesModule(sourceFile: SourceFile, project
   }
 
   const initializer = exportVar.getInitializerOrThrow();
-
   const arrayArg = initializer.getFirstDescendantByKindOrThrow(
     SyntaxKind.ArrayLiteralExpression
   ) as ArrayLiteralExpression;
-
   const controllerItems = arrayArg.getElements();
   const results: ParsedRouteController[] = [];
 
   for (const node of controllerItems) {
-    // Expecting identifier for controller
     const ident = node.asKind(SyntaxKind.Identifier);
     if (!ident) {
       throw new Error(`Expected controller entry to be an Identifier, got ${node.getKindName()}`);
@@ -102,10 +97,21 @@ export function parseControllersFromRoutesModule(sourceFile: SourceFile, project
 
     const methods = classDecl.getInstanceMethods().map((m) => {
       const returnType = m.getReturnType();
-      const params = m.getParameters().map((p) => ({
-        name: p.getName(),
-        type: p.getType(),
-      }));
+      const tsParams = m.getParameters();
+
+      // retrieve runtime decorator metadata using reflect-metadata
+      const runtimeParams = getRuntimeParams(classDecl.getNameOrThrow().prototype, m.getName()) || [];
+
+      // merge ts-morph param info with runtime metadata
+      const params = tsParams.map((p, index) => {
+        const meta = runtimeParams[index];
+        return {
+          name: p.getName(),
+          type: p.getType(),
+          decoratorType: meta?.type, // ParamType enum
+          dto: meta?.dto,
+        };
+      });
 
       const jsDoc = m
         .getJsDocs()
